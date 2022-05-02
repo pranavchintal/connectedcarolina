@@ -18,6 +18,18 @@ export default function GroupFeed() {
 	const [days, setDays] = useState([])
 	const [search, setSearch] = useState('')
 	const [tags, setTags] = useState('')
+	const [colTitle, setColTitle] = useState()
+	const [colDescription, setColDescription] = useState()
+	const [colTags, setColTags] = useState()
+	const [colCreator, setColCreator] = useState()
+	const [colLocation, setColLocation] = useState()
+	const [colDate, setColDate] = useState()
+	const [colDays, setColDays] = useState()
+	const [colCap, setColCap] = useState()
+	const [colSocial, setColSocial] = useState()
+	const [reqCount, setReqCount] = useState()
+	const [colVisible, setColVisible] = useState(false)
+	const [colGroupID, setColGroupID] = useState()
 
 	const handleFormat = (
 		event: MouseEvent<HTMLElement>,
@@ -56,13 +68,45 @@ export default function GroupFeed() {
 		}
 	}
 
+	let toTitleCase = (str) => {
+		return str.replace(/\w\S*/g, function (txt) {
+			return txt.charAt(0).toUpperCase() + txt.substr(1)
+		})
+	}
+
+	let colTagsRender = (colTags && colTags.map(tag => (
+		<span className="tag is-rounded has-text-weight-semibold has-text-dark"
+			key={tag}>
+			{toTitleCase(tag)}
+		</span>
+	)))
+
 	let groupcards = (groups && filterFunc(groups).map(group => (
 		<GroupCard title={group.title}
 			description={group.description}
 			tags={group.tags}
 			key={group.created}
 			social={group.social}
-			event={group.event} />
+			event={group.event}
+			creator={group.creator}
+			created={group.created}
+			date={group.date}
+			days={group.days}
+			cap={group.cap}
+			location={group.location}
+			setColTitle={setColTitle}
+			setColDescription={setColDescription}
+			setColTags={setColTags}
+			setColCreator={setColCreator}
+			setColLocation={setColLocation}
+			setColDate={setColDate}
+			setColDays={setColDays}
+			setColCap={setColCap}
+			setColSocial={setColSocial}
+			setColVisible={setColVisible}
+			colVisible={colVisible}
+			colGroupID={colGroupID}
+			setColGroupID={setColGroupID} />
 	)))
 
 	useEffect(() => {
@@ -187,7 +231,7 @@ export default function GroupFeed() {
 									<div>
 										<span className="mt-2">
 											<span className="has-text-weight-bold">Recurring Groups</span>
-											<CCSwitch onChange={() => setIsEvent(!isEvent)} />
+											<CCSwitch onChange={() => { setIsEvent(!isEvent); setColVisible(false) }} />
 											<span className="has-text-weight-medium">Event Groups</span>
 										</span>
 									</div>
@@ -202,9 +246,82 @@ export default function GroupFeed() {
 								</div>
 								{groupcards}
 							</div>
-							<div className="column">
+							{colVisible ?
+								(<div className="column mt-6 pt-6">
+									<p className="has-text-black has-text-weight-semibold is-size-4 mt-6 pt-6">
+										{colTitle || 'Sample title'}
+									</p>
+									<div className="tags mt-2 mb-2">
+										{isEvent &&
+											<span className="tag is-rounded has-text-weight-semibold has-text-white is-event">
+												{colSocial ? 'Social Event' : 'Study Event'}
+											</span>
+										}
+										{!isEvent &&
+											<span className="tag is-rounded has-text-weight-semibold has-text-white is-success">
+												{colSocial ? 'Social Group' : 'Study Group'}
+											</span>
 
-							</div>
+										}
+										{colTagsRender}
+									</div>
+									<div className="media mb-4">
+										<figure className="media-left">
+											<p className="image is-64x64">
+												<img src={require("../assets/profile_pic.png")} alt="face" />
+											</p>
+										</figure>
+										<p className="media-content has-text-black is-size-6 mt-4 ml-2">Created by {`${colCreator || 'Anonymous'}`}</p>
+									</div>
+									<p className="has-text-black has-text-weight-semibold is-size-6">
+										{`${isEvent ? 'Event' : 'Group'} Info`}
+									</p>
+									<p className='has-text-black mb-4'>
+										{colDescription || 'Description'}
+									</p>
+									{colLocation &&
+										<p className='mb-2'>
+											{colLocation}
+										</p>
+									}
+									{isEvent && colDate &&
+										<p className='mb-2'>
+											{new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(colDate.seconds * 1000) || 'Date'}
+										</p>
+									}
+									{!isEvent && colDays &&
+										<p className='mb-2'>
+											{(colDays && `Meets ${colDays.map(day => ' ' + toTitleCase(day))}`) || 'Days'}
+										</p>
+									}
+									{colCap &&
+										<p className='mb-2'>
+											{`${colCap} people`}
+										</p>
+									}
+									<div className="field mt-5">
+										<div className="is-flex is-flex-direction-row is-justify-content-space-between">
+											<label className="label has-text-black has-text-weight-semibold">
+												Send a message to the group creator along with your request (optional)
+											</label>
+											<span className="label has-text-weight-normal has-text-right mt-1" style={{ fontSize: "0.85rem" }}>{reqCount}/280</span>
+										</div>
+										<div className="control">
+											<textarea className="textarea has-text-black" placeholder="" onChange={e => setReqCount(e.target.value.length)}></textarea>
+										</div>
+									</div>
+									<div className="field is-grouped mt-3">
+										<div className="control">
+											<button className="button is-primary has-text-weight-bold is-rounded mr-3">Send Request</button>
+										</div>
+										<div className="control">
+											<button className="button is-danger has-text-weight-bold is-rounded">Cancel</button>
+										</div>
+									</div>
+								</div>)
+								:
+								(<div className="column"></div>)
+							}
 						</div>
 					</div>
 				</section>
