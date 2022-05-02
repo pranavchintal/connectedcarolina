@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar"
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useState } from "react"
+import InterestDropdown from "../components/InterestDropdown";
 
 export default function CreateGroup() {
     const [groupNameCount, setGroupNameCount] = useState(0);
@@ -128,6 +129,7 @@ export default function CreateGroup() {
                                             <i class="fas fa-chevron-down"></i>
                                         </span>
                                     </div>
+                                    <InterestDropdown name="Sports" />
                                 </div>
                             </div>
                         </form>
