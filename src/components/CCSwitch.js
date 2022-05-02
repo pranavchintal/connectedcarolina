@@ -79,12 +79,12 @@ const Root = styled('span')(
   `,
 );
 
-export default function UnstyledSwitches() {
+export default function UnstyledSwitches(props) {
   const label = { componentsProps: { input: { 'aria-label': 'Demo switch' } } };
 
   return (
     <div>
-      <SwitchUnstyled component={Root} {...label} defaultChecked />
+      <SwitchUnstyled component={Root} {...label} onChange={props.onChange} defaultChecked />
     </div>
   );
 }
