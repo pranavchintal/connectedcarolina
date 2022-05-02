@@ -29,8 +29,7 @@ export default function Navbar() {
             <Link to="/create" className="navbar-item has-text-weight-medium has-text-primary">
               Create Group
             </Link>
-
-            <Link to="/feed" className="navbar-item has-text-weight-medium has-text-primary">
+            <Link to="/mygroups" className="navbar-item has-text-weight-medium has-text-primary">
               My Groups
             </Link>
             <a className="navbar-link">
