@@ -4,6 +4,7 @@ import './styles.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import GroupFeed from './pages/GroupFeed';
 import CreateGroup from './pages/CreateGroup';
+import MyGroups from './pages/MyGroups';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,6 +15,7 @@ root.render(
         <Route path="/" element={<GroupFeed />} />
         <Route path="feed" element={<GroupFeed />} />
         <Route path="create" element={<CreateGroup />} />
+        <Route path="mygroups" element={<MyGroups />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
