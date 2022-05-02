@@ -115,21 +115,21 @@ export default function CreateGroup() {
                                 <div className="column is-one-third">
                                     <p className="has-text-black has-text-weight-semibold is-size-4 mb-3">Tags</p>
                                     <p className="has-text-grey-darker">Choose at least one tag to describe your group.</p>
-                                    <div class="field mt-3">
-                                        <div class="control has-icons-right">
-                                            <input class="input has-text-black" type="text" placeholder="Search for tags" />
-                                            <span class="icon is-small is-right">
-                                                <i class="fas fa-search"></i>
+                                    <div className="field mt-3">
+                                        <div className="control has-icons-right">
+                                            <input className="input has-text-black" type="text" placeholder="Search for tags" />
+                                            <span className="icon is-small is-right">
+                                                <i className="fas fa-search"></i>
                                             </span>
                                         </div>
                                     </div>
                                     <div className="has-text-black has-text-weight-medium mb-3">
                                         <span className="mr-1 has-text-weight-semibold">Majors</span>
-                                        <span class="icon">
-                                            <i class="fas fa-chevron-down"></i>
+                                        <span className="icon">
+                                            <i className="fas fa-chevron-down"></i>
                                         </span>
                                     </div>
-                                    <InterestDropdown name="Sports" />
+                                    <InterestDropdown />
                                 </div>
                             </div>
                         </form>
