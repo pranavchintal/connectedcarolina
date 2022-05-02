@@ -121,7 +121,7 @@ export default function GroupFeed() {
 											<i className="fas fa-chevron-up"></i>
 										</span>
 									</div>
-									<div className="tags are-small are-rounded">
+									<div className="tags are-small">
 										<span className="tag is-rounded is-primary has-text-weight-semibold has-text-white">Soccer</span>
 										<span className="tag is-rounded is-primary has-text-weight-semibold has-text-white">Football</span>
 										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Baseball</span>

@@ -129,7 +129,7 @@ export default function CreateGroup() {
                                             <i className="fas fa-chevron-down"></i>
                                         </span>
                                     </div>
-                                    <InterestDropdown />
+                                    <InterestDropdown name="Sports" />
                                 </div>
                             </div>
                         </form>
