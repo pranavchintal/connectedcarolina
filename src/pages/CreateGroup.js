@@ -49,6 +49,20 @@ export default function CreateGroup() {
                                         </div>
                                     </div>
                                     <div className="field mt-5">
+                                        <label className="label has-text-black has-text-weight-semibold">Recurring/Event</label>
+                                        <div className="">
+                                            <label className="radio mb-2">
+                                                <input className="mr-2" type="radio" name="type" />
+                                                Recurring Group
+                                            </label>
+                                        </div>
+                                        <label className="radio">
+                                            <input className="mr-2" type="radio" name="type" />
+                                            Event Group
+                                        </label>
+                                    </div>
+
+                                    <div className="field mt-5">
                                         <label className="label has-text-black has-text-weight-semibold">Type</label>
                                         <div className="">
                                             <label className="radio mb-2">
@@ -60,6 +74,15 @@ export default function CreateGroup() {
                                             <input className="mr-2" type="radio" name="type" />
                                             Study Group
                                         </label>
+                                    </div>
+                                    <div className="field mt-5">
+                                        <div className="is-flex is-flex-direction-row is-justify-content-space-between">
+                                            <label className="label has-text-black has-text-weight-semibold">Group Size</label>
+                                            <span className="label has-text-weight-normal has-text-right mt-1" style={{ fontSize: "0.85rem" }}>Maximum: 12</span>
+                                        </div>
+                                        <div className="control">
+                                            <input className="input has-text-black" type="text" onChange={e => setGroupNameCount(e.target.value.length)} />
+                                        </div>
                                     </div>
                                     <div className="field mt-5">
                                         <div className="is-flex is-flex-direction-row is-justify-content-space-between">
