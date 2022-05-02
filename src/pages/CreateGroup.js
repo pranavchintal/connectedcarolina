@@ -3,12 +3,22 @@ import Navbar from "../components/Navbar"
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useState } from "react"
+import db from '../firebase/firebase'
+import { collection, doc, addDoc, Timestamp } from 'firebase/firestore'
+
 
 export default function CreateGroup() {
     const [groupNameCount, setGroupNameCount] = useState(0);
     const [descCount, setDescCount] = useState(0);
-
+    const [groupName, setGroupName] = useState("");
+    //if not social, study
+    const [isSocial, setIsSocial] = useState(true);
+    const [description, setDescription] = useState("");
+    const [days, setDays] = useState([])
+    const [location, setLocation] = useState("");
     const [formats, setFormats] = useState(() => ['bold', 'italic']);
+    const [tags, setTags] = useState("");
+
 
     const handleFormat = (
         event: React.MouseEvent<HTMLElement>,
@@ -17,18 +27,49 @@ export default function CreateGroup() {
         setFormats(newFormats);
     };
 
+    async function handleSubmit(event) {
+
+        event.preventDefault();
+
+        const group = {
+            cap : 10,
+            created : Timestamp.now(),
+            creator : "David Hodgin",
+            days : days,
+            description : description,
+            event : false,
+            social : isSocial,
+            members : ["David Hodgin"],
+            tags : ["Placeholder"],
+            location : location
+        }
+
+        await addDoc(collection(db, "Groups"), group).catch((error) => console.log(error));
+        //await collection(db, "Groups").add();
+    }
+
+    let toggleDays = (value) => {
+        if (days.includes(value)) {
+            setDays(days.filter(day => day !== value))
+        } else {
+            setDays([...days, value])
+        }
+
+        //console.log(Timestamp.fromMillis(Date.now()));
+    }
+
     return (
         <div>
             <div className="group-feed">
                 <Navbar />
                 <section className="section p-6">
                     <div className="container">
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="is-flex is-flex-direction-row is-justify-content-space-between">
                                 <span className="is-size-2 has-text-weight-bold has-text-black">Create a group</span>
                                 <div className="field is-grouped mt-3">
                                     <div className="control">
-                                        <button className="button is-primary has-text-weight-bold is-rounded mr-3">Finish Creating</button>
+                                        <button type="submit" className="button is-primary has-text-weight-bold is-rounded mr-3">Finish Creating</button>
                                     </div>
                                     <div className="control">
                                         <button className="button is-danger has-text-weight-bold is-rounded">Cancel</button>
@@ -44,19 +85,19 @@ export default function CreateGroup() {
                                             <span className="label has-text-weight-normal has-text-right mt-1" style={{ fontSize: "0.85rem" }}>{groupNameCount}/60</span>
                                         </div>
                                         <div className="control">
-                                            <input className="input has-text-black" type="text" onChange={e => setGroupNameCount(e.target.value.length)} />
+                                            <input className="input has-text-black" value={groupName} type="text" onChange={e => {setGroupNameCount(e.target.value.length); setGroupName(e.target.value)}} />
                                         </div>
                                     </div>
                                     <div className="field mt-5">
                                         <label className="label has-text-black has-text-weight-semibold">Type</label>
                                         <div className="">
                                             <label className="radio mb-2">
-                                                <input className="mr-2" type="radio" name="type" />
+                                                <input className="mr-2" type="radio" name="type" defaultChecked onSelect={() => setIsSocial(true)}/>
                                                 Social Group
                                             </label>
                                         </div>
                                         <label className="radio">
-                                            <input className="mr-2" type="radio" name="type" />
+                                            <input className="mr-2" type="radio" name="type" onSelect={() => setIsSocial(false)} />
                                             Study Group
                                         </label>
                                     </div>
@@ -66,7 +107,7 @@ export default function CreateGroup() {
                                             <span className="label has-text-weight-normal has-text-right mt-1" style={{ fontSize: "0.85rem" }}>{descCount}/300</span>
                                         </div>
                                         <div className="control">
-                                            <textarea className="textarea has-text-black" placeholder="" onChange={e => setDescCount(e.target.value.length)}></textarea>
+                                            <textarea className="textarea has-text-black" value={description} placeholder="" onChange={e => {setDescCount(e.target.value.length); setDescription(e.target.value)}}></textarea>
                                         </div>
                                     </div>
                                     <hr />
@@ -81,25 +122,25 @@ export default function CreateGroup() {
                                             size="small"
                                             fullWidth
                                         >
-                                            <ToggleButton sx={{ borderRadius: 9999 }} value="sunday">
+                                            <ToggleButton sx={{ borderRadius: 9999 }} value="sunday" onClick={e => toggleDays(e.target.value)}>
                                                 S
                                             </ToggleButton>
-                                            <ToggleButton value="monday">
+                                            <ToggleButton value="monday"  onClick={e => toggleDays(e.target.value)}>
                                                 M
                                             </ToggleButton>
-                                            <ToggleButton value="tuesday">
+                                            <ToggleButton value="tuesday"  onClick={e => toggleDays(e.target.value)}>
                                                 T
                                             </ToggleButton>
-                                            <ToggleButton value="wednesday">
+                                            <ToggleButton value="wednesday"  onClick={e => toggleDays(e.target.value)}>
                                                 W
                                             </ToggleButton>
-                                            <ToggleButton value="thursday">
+                                            <ToggleButton value="thursday"  onClick={e => toggleDays(e.target.value)}>
                                                 T
                                             </ToggleButton>
-                                            <ToggleButton value="friday">
+                                            <ToggleButton value="friday"  onClick={e => toggleDays(e.target.value)}>
                                                 F
                                             </ToggleButton>
-                                            <ToggleButton sx={{ borderRadius: 9999 }} value="saturday">
+                                            <ToggleButton sx={{ borderRadius: 9999 }} value="saturday" onClick={e => toggleDays(e.target.value)}>
                                                 S
                                             </ToggleButton>
                                         </ToggleButtonGroup>
@@ -107,7 +148,7 @@ export default function CreateGroup() {
                                     <div className="field mt-5">
                                         <label className="label has-text-black has-text-weight-semibold">Location</label>
                                         <div className="control">
-                                            <input className="input has-text-black" type="text" />
+                                            <input className="input has-text-black" value={location} type="text" onChange={event => setLocation(event.target.value)}/>
                                         </div>
                                     </div>
                                 </div>
