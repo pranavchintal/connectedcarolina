@@ -316,7 +316,7 @@ export default function GroupFeed() {
 											<button className="button is-primary has-text-weight-bold is-rounded mr-3">Send Request</button>
 										</div>
 										<div className="control">
-											<button className="button is-danger has-text-weight-bold is-rounded">Cancel</button>
+											<button className="button is-danger has-text-weight-bold is-rounded" onClick={() => { setColVisible(false); setColGroupID(null) }}>Cancel</button>
 										</div>
 									</div>
 								</div>)
