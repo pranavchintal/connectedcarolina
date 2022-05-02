@@ -16,7 +16,6 @@ export default function GroupFeed() {
   const [joined, setJoined] = useState()
   const myName = 'Will'
 
-
   let groupcards = (groupSet) => (groupSet &&
     groupSet.sort((a, b) => b.created - a.created).map(group => (
       <GroupCard title={group.title}

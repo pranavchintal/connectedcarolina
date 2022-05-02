@@ -30,6 +30,7 @@ export default function GroupFeed() {
 	const [reqCount, setReqCount] = useState()
 	const [colVisible, setColVisible] = useState(false)
 	const [colGroupID, setColGroupID] = useState()
+	const myName = 'Will'
 
 	const handleFormat = (
 		event: MouseEvent<HTMLElement>,
@@ -115,7 +116,7 @@ export default function GroupFeed() {
 			const query = await getDocs(collection(db, 'Groups'))
 
 			query.forEach(doc => groupsList.push(doc.data()))
-			setGroups(groupsList)
+			setGroups(groupsList.filter(group => group.creator !== myName && !group.members.includes(myName)))
 		}
 		getQuery();
 	}, [])
