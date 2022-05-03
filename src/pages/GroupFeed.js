@@ -6,8 +6,9 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useState, useEffect } from 'react';
 import db from '../firebase/firebase'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, query, where, arrayUnion, updateDoc, doc } from 'firebase/firestore'
 import GroupCard from "../components/GroupCard";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function GroupFeed() {
 	const [formats, setFormats] = useState(() => ['bold', 'italic']);
@@ -81,6 +82,21 @@ export default function GroupFeed() {
 			{toTitleCase(tag)}
 		</span>
 	)))
+
+	let handleJoin = async () => {
+		let toJoin
+		const q = query(collection(db, "Groups"), where("created", "==", colGroupID))
+		const querySnapshot = await getDocs(q)
+
+		querySnapshot.forEach(doc => {
+			toJoin = doc.id
+		})
+
+		await updateDoc(doc(db, "Groups", toJoin), {
+			members: arrayUnion(myName)
+		})
+		// useNavigate("/mygroups")
+	}
 
 	let groupcards = (groups && filterFunc(groups).map(group => (
 		<GroupCard title={group.title}
@@ -313,7 +329,11 @@ export default function GroupFeed() {
 									</div>
 									<div className="field is-grouped mt-3">
 										<div className="control">
-											<button className="button is-primary has-text-weight-bold is-rounded mr-3">Send Request</button>
+											<Link to='/mygroups'>
+												<button className="button is-primary has-text-weight-bold is-rounded mr-3" onClick={() => handleJoin()}>
+													Send Request
+												</button>
+											</Link>
 										</div>
 										<div className="control">
 											<button className="button is-danger has-text-weight-bold is-rounded" onClick={() => { setColVisible(false); setColGroupID(null) }}>Cancel</button>
