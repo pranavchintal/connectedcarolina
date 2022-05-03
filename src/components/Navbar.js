@@ -29,7 +29,6 @@ export default function Navbar() {
             <Link to="/create" className="navbar-item has-text-weight-medium has-text-primary">
               Create Group
             </Link>
-
             <Link to="/mygroups" className="navbar-item has-text-weight-medium has-text-primary">
               My Groups
             </Link>
