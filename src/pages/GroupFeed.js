@@ -91,13 +91,13 @@ export default function GroupFeed() {
 									<p className="has-text-black has-text-weight-semibold is-size-5 pt-1 pb-2">Types</p>
 									<div className="py-1">
 										<label className="checkbox has-text-weight-medium">
-											<input type="checkbox" value={social} onChange={() => setSocial(!social)} defaultChecked />
+											<input type="checkbox" value={social} checked={social} onChange={() => setSocial(!social)}/>
 											<span className="has-text-white">_</span>Social Groups
 										</label>
 									</div>
 									<div className="py-1">
 										<label className="checkbox has-text-weight-medium pr-4">
-											<input type="checkbox" value={study} onChange={() => setStudy(!study)} defaultChecked />
+											<input type="checkbox" value={study} checked={study} onChange={() => setStudy(!study)}/>
 											<span className="has-text-white">_</span>Study Groups
 										</label>
 									</div>

@@ -109,7 +109,7 @@ export default function CreateGroup() {
                                             <span className="label has-text-weight-normal has-text-right mt-1" style={{ fontSize: "0.85rem" }}>{groupNameCount}/60</span>
                                         </div>
                                         <div className="control">
-                                            <input className="input has-text-black" value={groupName} type="text" onChange={e => {setGroupNameCount(e.target.value.length); setGroupName(e.target.value)}} />
+                                            <input className="input has-text-black" maxlength="60" value={groupName} type="text" onChange={e => {setGroupNameCount(e.target.value.length); setGroupName(e.target.value)}} />
                                         </div>
                                     </div>
                                     <div className="field mt-5">
@@ -165,7 +165,7 @@ export default function CreateGroup() {
                                             <span className="label has-text-weight-normal has-text-right mt-1" style={{ fontSize: "0.85rem" }}>{descCount}/300</span>
                                         </div>
                                         <div className="control">
-                                            <textarea className="textarea has-text-black" value={description} placeholder="" onChange={e => {setDescCount(e.target.value.length); setDescription(e.target.value)}}></textarea>
+                                            <textarea className="textarea has-text-black" maxlength="300" value={description} placeholder="" onChange={e => {setDescCount(e.target.value.length); setDescription(e.target.value)}}></textarea>
                                         </div>
                                     </div>
                                     <hr />
