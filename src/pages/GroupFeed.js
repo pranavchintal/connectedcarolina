@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import db from '../firebase/firebase'
 import { collection, getDocs, query, where, arrayUnion, updateDoc, doc } from 'firebase/firestore'
 import GroupCard from "../components/GroupCard";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function GroupFeed() {
 	const [formats, setFormats] = useState(() => ['bold', 'italic']);
