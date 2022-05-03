@@ -6,6 +6,7 @@ import { useState } from "react"
 import db from '../firebase/firebase'
 import { collection, doc, addDoc, Timestamp } from 'firebase/firestore'
 
+import InterestDropdown from "../components/InterestDropdown";
 
 export default function CreateGroup() {
     const [groupNameCount, setGroupNameCount] = useState(0);
@@ -18,7 +19,10 @@ export default function CreateGroup() {
     const [location, setLocation] = useState("");
     const [formats, setFormats] = useState(() => ['bold', 'italic']);
     const [tags, setTags] = useState("");
-
+    const [groupCap, setGroupCap] = useState(12);
+    const [isEvent, setIsEvent] = useState(false);
+    const [eventDate, setEventDate] = useState("");
+    const [eventTime, setEventTime] = useState("");
 
     const handleFormat = (
         event: React.MouseEvent<HTMLElement>,
@@ -27,25 +31,47 @@ export default function CreateGroup() {
         setFormats(newFormats);
     };
 
+    // function formatDate_YYYY_MM_DD(date) {
+    //     return date.getFullYear() + "-" + date.getMonth() + 1 + '-' + date.getDate();
+    // }
+
+    function formatTime_HH_mm(date) {
+        return date.getHours();
+    }
+
     async function handleSubmit(event) {
 
         event.preventDefault();
 
+        if(groupCap > 12) {
+            setGroupCap(12);
+        } else if(groupCap > 2) {
+            setGroupCap(2);
+        }
+
+        let date = new Date(eventDate);
+        date.setHours(eventTime.substring(0,2));
+        date.setMinutes(eventTime.substring(3,5));
+        date.setDate(date.getDate() + 1);  
+
+
+
         const group = {
-            cap : 10,
+            cap : groupCap > groupCap,
             created : Timestamp.now(),
             creator : "David Hodgin",
-            days : days,
+            days : isEvent ? undefined : days,
             description : description,
-            event : false,
+            date : isEvent ? Timestamp.fromDate(date) : undefined,
+            event : isEvent,
             social : isSocial,
             members : ["David Hodgin"],
             tags : ["Placeholder"],
-            location : location
+            location : location == "" ? "n/a" : location,
+            title : groupName
         }
 
         await addDoc(collection(db, "Groups"), group).catch((error) => console.log(error));
-        //await collection(db, "Groups").add();
     }
 
     let toggleDays = (value) => {
@@ -54,8 +80,6 @@ export default function CreateGroup() {
         } else {
             setDays([...days, value])
         }
-
-        //console.log(Timestamp.fromMillis(Date.now()));
     }
 
     return (
@@ -89,18 +113,52 @@ export default function CreateGroup() {
                                         </div>
                                     </div>
                                     <div className="field mt-5">
+                                        <label className="label has-text-black has-text-weight-semibold">Recurring/Event</label>
+                                        <div className="">
+                                            <label className="radio mb-2">
+                                                <input className="mr-2" type="radio" name="recOrEv" value="rec" checked={!isEvent} onChange={() => setIsEvent(false)}/>
+                                                Recurring Group
+                                            </label>
+                                        </div>
+                                        <label className="radio">
+                                            <input className="mr-2" type="radio" name="recOrEv" value="event" checked={isEvent} onChange={() => setIsEvent(true)}/>
+                                            Event Group
+                                        </label>
+                                    </div>
+
+                                    <div className="field mt-5">
                                         <label className="label has-text-black has-text-weight-semibold">Type</label>
                                         <div className="">
                                             <label className="radio mb-2">
-                                                <input className="mr-2" type="radio" name="type" defaultChecked onSelect={() => setIsSocial(true)}/>
+                                                <input className="mr-2" type="radio" name="groupType" checked={isSocial} onChange={() => setIsSocial(true)}/>
                                                 Social Group
                                             </label>
                                         </div>
                                         <label className="radio">
-                                            <input className="mr-2" type="radio" name="type" onSelect={() => setIsSocial(false)} />
+                                            <input className="mr-2" type="radio" name="groupType" checked={!isSocial} onChange={() => setIsSocial(false)} />
                                             Study Group
                                         </label>
                                     </div>
+                                    <div className="field mt-5">
+                                        <div className="is-flex is-flex-direction-row is-justify-content-space-between">
+                                            <label className="label has-text-black has-text-weight-semibold">Group Size</label>
+                                            <span className="label has-text-weight-normal has-text-right mt-1" style={{ fontSize: "0.85rem" }}>Maximum: 12</span>
+                                        </div>
+                                        <div className="control">
+                                            <input className="input has-text-black" type="number" max="12" min="2" onChange={e => setGroupCap(e.target.value)} />
+                                        </div>
+                                    </div>
+                                    {isEvent ? <div className="field mt-5">
+                                        <div className="is-flex is-flex-direction-row is-justify-content-space-between">
+                                            <label className="label has-text-black has-text-weight-semibold">Event Date</label>
+                                        </div>
+                                        <div className="control">
+                                            <input className="input has-text-black" type="date" onChange={(event) => setEventDate(event.target.value)} />
+                                        </div>
+                                        <div className="control">
+                                            <input className="input has-text-black" type="time" onChange={(event) => setEventTime(event.target.value)} />
+                                        </div>
+                                    </div> : null}
                                     <div className="field mt-5">
                                         <div className="is-flex is-flex-direction-row is-justify-content-space-between">
                                             <label className="label has-text-black has-text-weight-semibold">Description</label>
@@ -112,6 +170,7 @@ export default function CreateGroup() {
                                     </div>
                                     <hr />
                                     <p className="has-text-grey-darker">These two fields are optional.</p>
+                                    { isEvent ? <div></div> : (
                                     <div>
                                         <p className="has-text-black has-text-weight-semibold mt-4 mb-3 is-size-6">Meeting Availability</p>
                                         <ToggleButtonGroup
@@ -144,7 +203,8 @@ export default function CreateGroup() {
                                                 S
                                             </ToggleButton>
                                         </ToggleButtonGroup>
-                                    </div>
+                                    </div>)
+                                    }
                                     <div className="field mt-5">
                                         <label className="label has-text-black has-text-weight-semibold">Location</label>
                                         <div className="control">
@@ -155,20 +215,21 @@ export default function CreateGroup() {
                                 <div className="column is-one-third">
                                     <p className="has-text-black has-text-weight-semibold is-size-4 mb-3">Tags</p>
                                     <p className="has-text-grey-darker">Choose at least one tag to describe your group.</p>
-                                    <div class="field mt-3">
-                                        <div class="control has-icons-right">
-                                            <input class="input has-text-black" type="text" placeholder="Search for tags" />
-                                            <span class="icon is-small is-right">
-                                                <i class="fas fa-search"></i>
+                                    <div className="field mt-3">
+                                        <div className="control has-icons-right">
+                                            <input className="input has-text-black" type="text" placeholder="Search for tags" />
+                                            <span className="icon is-small is-right">
+                                                <i className="fas fa-search"></i>
                                             </span>
                                         </div>
                                     </div>
                                     <div className="has-text-black has-text-weight-medium mb-3">
                                         <span className="mr-1 has-text-weight-semibold">Majors</span>
-                                        <span class="icon">
-                                            <i class="fas fa-chevron-down"></i>
+                                        <span className="icon">
+                                            <i className="fas fa-chevron-down"></i>
                                         </span>
                                     </div>
+                                    <InterestDropdown name="Sports" />
                                 </div>
                             </div>
                         </form>
