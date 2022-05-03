@@ -16,7 +16,6 @@ export default function GroupFeed() {
   const [joined, setJoined] = useState()
   const myName = 'Will'
 
-
   let groupcards = (groupSet) => (groupSet &&
     groupSet.sort((a, b) => b.created - a.created).map(group => (
       <GroupCard title={group.title}
@@ -28,20 +27,25 @@ export default function GroupFeed() {
     )))
 
   useEffect(() => {
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
     async function getQuery() {
       let groupsList = []
+      await delay(250)
+
       const query = await getDocs(collection(db, 'Groups'))
 
       query.forEach(doc => groupsList.push(doc.data()))
       setGroups(groupsList)
     }
+
     getQuery();
   }, [])
 
   useEffect(() => {
     if (groups) {
       setCreated(groups.filter(group => group.creator === myName))
-      setJoined(groups.filter(group => group.members.includes(myName)))
+      setJoined(groups.filter(group => group.members.includes(myName) && group.creator !== myName))
     }
   }, [groups])
 
@@ -65,14 +69,14 @@ export default function GroupFeed() {
                   </div>
                 </div>
                 <p className="has-text-black has-text-weight-semibold is-size-5 pt-1 mt-5">
-                  Created Groups ({created && `${created.length}`})&nbsp;&nbsp;
+                  Created Groups ({(created && `${created.length}`) || 0})&nbsp;&nbsp;
                   <span className="icon">
                     <i className="fas fa-chevron-up"></i>
                   </span>
                 </p>
                 {groupcards(created)}
                 <p className="has-text-black has-text-weight-semibold is-size-5 pt-1 mt-5">
-                  Joined Groups ({joined && `${joined.length}`})&nbsp;&nbsp;
+                  Joined Groups ({(joined && `${joined.length}`) || 0})&nbsp;&nbsp;
                   <span className="icon">
                     <i className="fas fa-chevron-up"></i>
                   </span>
