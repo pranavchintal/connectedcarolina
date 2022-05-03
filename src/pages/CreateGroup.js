@@ -358,13 +358,13 @@ export default function CreateGroup() {
 										      borderRadius: '9999px',
 										    }}
 										  >
-										    <ToggleButton value="basketball" aria-label="bold">
+										    <ToggleButton value="basketball" onClick={e => toggleTags(e.target.value)}>
 										      Basketball
 										    </ToggleButton>
-										    <ToggleButton value="football" aria-label="italic">
+										    <ToggleButton value="football" onClick={e => toggleTags(e.target.value)}>
 										      Football
 										    </ToggleButton>
-										    <ToggleButton value="golf" aria-label="underlined">
+										    <ToggleButton value="golf" onClick={e => toggleTags(e.target.value)}>
 										      Golf
 										    </ToggleButton>
 										  </ToggleButtonGroup>
@@ -381,13 +381,13 @@ export default function CreateGroup() {
 										      borderRadius: '9999px',
 										    }}
 										  >
-										    <ToggleButton value="soccer" aria-label="color">
+										    <ToggleButton value="soccer" onClick={e => toggleTags(e.target.value)}>
 										      Soccer
 										    </ToggleButton>
-										    <ToggleButton value="hockey" aria-label="italic">
+										    <ToggleButton value="hockey" onClick={e => toggleTags(e.target.value)}>
 										      Hockey
 										    </ToggleButton>
-										    <ToggleButton value="baseball" aria-label="bold">
+										    <ToggleButton value="baseball" onClick={e => toggleTags(e.target.value)}>
 										      Baseball
 										    </ToggleButton>
 										  </ToggleButtonGroup>
@@ -404,10 +404,10 @@ export default function CreateGroup() {
 										      borderRadius: '9999px',
 										    }}
 										  >
-										    <ToggleButton value="other sports" aria-label="italic">
+										    <ToggleButton value="other sports" onClick={e => toggleTags(e.target.value)}>
 										      Other Sports
 										    </ToggleButton>
-										    <ToggleButton value="sports watching" aria-label="underlined">
+										    <ToggleButton value="sports watching" onClick={e => toggleTags(e.target.value)}>
 										      Sports Watching
 										    </ToggleButton>
 										  </ToggleButtonGroup>
