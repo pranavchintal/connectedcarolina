@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/connectedcarolina/static/css/main.69d63634.css",
+    "main.js": "/connectedcarolina/static/js/main.635334bf.js",
+    "static/js/787.17c89222.chunk.js": "/connectedcarolina/static/js/787.17c89222.chunk.js",
+    "static/media/profile_pic.png": "/connectedcarolina/static/media/profile_pic.f81dcdcdc6272acae5ef.png",
+    "index.html": "/connectedcarolina/index.html",
+    "main.69d63634.css.map": "/connectedcarolina/static/css/main.69d63634.css.map",
+    "main.635334bf.js.map": "/connectedcarolina/static/js/main.635334bf.js.map",
+    "787.17c89222.chunk.js.map": "/connectedcarolina/static/js/787.17c89222.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.69d63634.css",
+    "static/js/main.635334bf.js"
+  ]
+}
