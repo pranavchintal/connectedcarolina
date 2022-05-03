@@ -287,10 +287,10 @@ export default function GroupFeed() {
 												borderRadius: '9999px',
 											}}
 										>
-											<ToggleButton value="othersports" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+											<ToggleButton value="other sports" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
 												Other Sports
 											</ToggleButton>
-											<ToggleButton value="sportswatching" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+											<ToggleButton value="sports watching" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
 												Sports Watching
 											</ToggleButton>
 										</ToggleButtonGroup>
@@ -317,10 +317,10 @@ export default function GroupFeed() {
 											<ToggleButton value="art" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
 												Art
 											</ToggleButton>
-											<ToggleButton value="videogames" onClick={e => toggleTags(e.target.value)}>
+											<ToggleButton value="video games" onClick={e => toggleTags(e.target.value)}>
 												Video Games
 											</ToggleButton>
-											<ToggleButton value="boardgames" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+											<ToggleButton value="board games" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
 												Board Games
 											</ToggleButton>
 										</ToggleButtonGroup>
