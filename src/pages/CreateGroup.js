@@ -26,7 +26,7 @@ export default function CreateGroup() {
 
     let toggleTags = (value) => {
         if (tags.includes(value)) {
-            setTags(days.filter(tag => tag !== value))
+            setTags(tags.filter(tag => tag !== value))
         } else {
             setTags([...tags, value])
         }
@@ -345,16 +345,73 @@ export default function CreateGroup() {
 											<i className="fas fa-chevron-up"></i>
 										</span>
 									</div>
-									<div className="tags are-small">
-										<span className="tag is-rounded is-primary has-text-weight-semibold has-text-white">Soccer</span>
-										<span className="tag is-rounded is-primary has-text-weight-semibold has-text-white">Football</span>
-										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Baseball</span>
-										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Basketball</span>
-										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Hockey</span>
-										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Golf</span>
-										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Other Sports</span>
-										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Sports Watching</span>
-									</div>
+									<div className="tags are-small are-rounded">
+										  <ToggleButtonGroup
+										    value={formats}
+										    onChange={handleFormat}
+										    aria-label="text formatting"
+										    type="checkbox"
+										    color="primary"
+										    size="small"
+										    fullWidth
+										    sx={{
+										      borderRadius: '9999px',
+										    }}
+										  >
+										    <ToggleButton value="basketball" aria-label="bold">
+										      Basketball
+										    </ToggleButton>
+										    <ToggleButton value="football" aria-label="italic">
+										      Football
+										    </ToggleButton>
+										    <ToggleButton value="golf" aria-label="underlined">
+										      Golf
+										    </ToggleButton>
+										  </ToggleButtonGroup>
+
+										  <ToggleButtonGroup
+										    value={formats}
+										    onChange={handleFormat}
+										    aria-label="text formatting"
+										    type="checkbox"
+										    color="primary"
+										    size="small"
+										    fullWidth
+										    sx={{
+										      borderRadius: '9999px',
+										    }}
+										  >
+										    <ToggleButton value="soccer" aria-label="color">
+										      Soccer
+										    </ToggleButton>
+										    <ToggleButton value="hockey" aria-label="italic">
+										      Hockey
+										    </ToggleButton>
+										    <ToggleButton value="baseball" aria-label="bold">
+										      Baseball
+										    </ToggleButton>
+										  </ToggleButtonGroup>
+
+										  <ToggleButtonGroup
+										    value={formats}
+										    onChange={handleFormat}
+										    aria-label="text formatting"
+										    type="checkbox"
+										    color="primary"
+										    size="small"
+										    fullWidth
+										    sx={{
+										      borderRadius: '9999px',
+										    }}
+										  >
+										    <ToggleButton value="other sports" aria-label="italic">
+										      Other Sports
+										    </ToggleButton>
+										    <ToggleButton value="sports watching" aria-label="underlined">
+										      Sports Watching
+										    </ToggleButton>
+										  </ToggleButtonGroup>
+                 							 </div>
 									<div className="has-text-black has-text-weight-medium mb-3">
 										<span className="mr-1">Interests</span>
 										<span className="icon">
