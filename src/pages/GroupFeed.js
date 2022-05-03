@@ -17,7 +17,7 @@ export default function GroupFeed() {
 	const [isEvent, setIsEvent] = useState(false)
 	const [days, setDays] = useState([])
 	const [search, setSearch] = useState('')
-	const [tags, setTags] = useState('')
+	const [tags, setTags] = useState([])
 
 	const handleFormat = (
 		event: MouseEvent<HTMLElement>,
@@ -36,10 +36,14 @@ export default function GroupFeed() {
 
 		let checker = (arr, target) => target.some(v => arr.includes(v));
 
+		if (tags.length != 0){
 		output = output && output.filter(group => group.event === isEvent &&
 			group.title.toLowerCase().includes(search.toLowerCase()) &&
-			group.tags.map(e => e.toLowerCase()).some(tag => tag.includes(tags)))
-
+			group.tags.map(e => e.toLowerCase()).some(tag => tags.includes(tag)))
+		} else {
+			output = output && output.filter(group => group.event === isEvent &&
+				group.title.toLowerCase().includes(search.toLowerCase()))
+			}
 		// if card days contains all of the state days, show
 		if (!isEvent && !days.length == 0) {
 			output = output && output.filter(group => checker(group.days, days))
@@ -58,7 +62,7 @@ export default function GroupFeed() {
 
 	let toggleTags = (value) => {
 		if (tags.includes(value)) {
-			setTags(days.filter(tag => tag !== value))
+			setTags(tags.filter(tag => tag != value))
 		} else {
 			setTags([...tags, value])
 		}
@@ -241,13 +245,13 @@ export default function GroupFeed() {
 										      borderRadius: '9999px',
 										    }}
 										  >
-										    <ToggleButton value="basketball" onClick={e => toggleTags(e.target.value)}>
+										    <ToggleButton value="basketball" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
 										      Basketball
 										    </ToggleButton>
 										    <ToggleButton value="football" onClick={e => toggleTags(e.target.value)}>
 										      Football
 										    </ToggleButton>
-										    <ToggleButton value="golf" onClick={e => toggleTags(e.target.value)}>
+										    <ToggleButton value="golf" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
 										      Golf
 										    </ToggleButton>
 										  </ToggleButtonGroup>
@@ -264,13 +268,13 @@ export default function GroupFeed() {
 										      borderRadius: '9999px',
 										    }}
 										  >
-										    <ToggleButton value="soccer" onClick={e => toggleTags(e.target.value)}>
+										    <ToggleButton value="soccer" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
 										      Soccer
 										    </ToggleButton>
 										    <ToggleButton value="hockey" onClick={e => toggleTags(e.target.value)}>
 										      Hockey
 										    </ToggleButton>
-										    <ToggleButton value="baseball" onClick={e => toggleTags(e.target.value)}>
+										    <ToggleButton value="baseball" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
 										      Baseball
 										    </ToggleButton>
 										  </ToggleButtonGroup>
@@ -287,10 +291,10 @@ export default function GroupFeed() {
 										      borderRadius: '9999px',
 										    }}
 										  >
-										    <ToggleButton value="other sports" onClick={e => toggleTags(e.target.value)}>
+										    <ToggleButton value="other sports" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
 										      Other Sports
 										    </ToggleButton>
-										    <ToggleButton value="sports watching" onClick={e => toggleTags(e.target.value)}>
+										    <ToggleButton value="sports watching" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
 										      Sports Watching
 										    </ToggleButton>
 										  </ToggleButtonGroup>
