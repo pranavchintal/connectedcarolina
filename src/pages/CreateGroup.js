@@ -6,7 +6,6 @@ import { useState } from "react"
 import db from '../firebase/firebase'
 import { collection, doc, addDoc, Timestamp } from 'firebase/firestore'
 
-import InterestDropdown from "../components/InterestDropdown";
 
 export default function CreateGroup() {
     const [groupNameCount, setGroupNameCount] = useState(0);
@@ -18,22 +17,27 @@ export default function CreateGroup() {
     const [days, setDays] = useState([])
     const [location, setLocation] = useState("");
     const [formats, setFormats] = useState(() => ['bold', 'italic']);
-    const [tags, setTags] = useState("");
+    const [tagSeach, setTagSearch] = useState("");
     const [groupCap, setGroupCap] = useState(12);
     const [isEvent, setIsEvent] = useState(false);
     const [eventDate, setEventDate] = useState("");
     const [eventTime, setEventTime] = useState("");
+    const [tags, setTags] = useState([]);
+
+    let toggleTags = (value) => {
+        if (tags.includes(value)) {
+            setTags(days.filter(tag => tag !== value))
+        } else {
+            setTags([...tags, value])
+        }
+    };
 
     const handleFormat = (
         event: React.MouseEvent<HTMLElement>,
         newFormats: string[],
-    ) => {
+        ) => {
         setFormats(newFormats);
     };
-
-    // function formatDate_YYYY_MM_DD(date) {
-    //     return date.getFullYear() + "-" + date.getMonth() + 1 + '-' + date.getDate();
-    // }
 
     function formatTime_HH_mm(date) {
         return date.getHours();
@@ -60,18 +64,24 @@ export default function CreateGroup() {
             cap : groupCap > groupCap,
             created : Timestamp.now(),
             creator : "David Hodgin",
-            days : isEvent ? undefined : days,
+            days : isEvent ? [] : days,
             description : description,
-            date : isEvent ? Timestamp.fromDate(date) : undefined,
+            date : isEvent ? Timestamp.fromDate(date) : Timestamp.now(),
             event : isEvent,
             social : isSocial,
             members : ["David Hodgin"],
-            tags : ["Placeholder"],
+            tags : tags,
             location : location == "" ? "n/a" : location,
             title : groupName
         }
 
         await addDoc(collection(db, "Groups"), group).catch((error) => console.log(error));
+
+        window.location.href = '/';
+    }
+
+    function redirect() {
+        window.location.href = '/';
     }
 
     let toggleDays = (value) => {
@@ -96,7 +106,7 @@ export default function CreateGroup() {
                                         <button type="submit" className="button is-primary has-text-weight-bold is-rounded mr-3">Finish Creating</button>
                                     </div>
                                     <div className="control">
-                                        <button className="button is-danger has-text-weight-bold is-rounded">Cancel</button>
+                                        <button className="button is-danger has-text-weight-bold is-rounded" onClick={redirect}>Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -155,6 +165,7 @@ export default function CreateGroup() {
                                         <div className="control">
                                             <input className="input has-text-black" type="date" onChange={(event) => setEventDate(event.target.value)} />
                                         </div>
+                                        <div className="field mt-5"></div>
                                         <div className="control">
                                             <input className="input has-text-black" type="time" onChange={(event) => setEventTime(event.target.value)} />
                                         </div>
@@ -169,7 +180,7 @@ export default function CreateGroup() {
                                         </div>
                                     </div>
                                     <hr />
-                                    <p className="has-text-grey-darker">These two fields are optional.</p>
+                                    <p className="has-text-grey-darker">These fields are optional.</p>
                                     { isEvent ? <div></div> : (
                                     <div>
                                         <p className="has-text-black has-text-weight-semibold mt-4 mb-3 is-size-6">Meeting Availability</p>
@@ -223,13 +234,322 @@ export default function CreateGroup() {
                                             </span>
                                         </div>
                                     </div>
-                                    <div className="has-text-black has-text-weight-medium mb-3">
-                                        <span className="mr-1 has-text-weight-semibold">Majors</span>
-                                        <span className="icon">
-                                            <i className="fas fa-chevron-down"></i>
-                                        </span>
-                                    </div>
-                                    <InterestDropdown name="Sports" />
+									<div className="has-text-black has-text-weight-medium mb-3">
+										<span className="mr-1">Majors</span>
+										<span className="icon">
+											<i className="fas fa-chevron-up"></i>
+										</span>
+									</div>
+									<div className="tags are-small are-rounded">
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="comp" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												COMP
+											</ToggleButton>
+											<ToggleButton value="phys" onClick={e => toggleTags(e.target.value)}>
+												PHYS
+											</ToggleButton>
+											<ToggleButton value="math" onClick={e => toggleTags(e.target.value)}>
+												MATH
+											</ToggleButton>
+											<ToggleButton value="stor" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												STOR
+											</ToggleButton>
+										</ToggleButtonGroup>
+
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="hist" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												HIST
+											</ToggleButton>
+											<ToggleButton value="engl" onClick={e => toggleTags(e.target.value)}>
+												ENGL
+											</ToggleButton>
+											<ToggleButton value="arth" onClick={e => toggleTags(e.target.value)}>
+												ARTH
+											</ToggleButton>
+											<ToggleButton value="pwad" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												PWAD
+											</ToggleButton>
+										</ToggleButtonGroup>
+
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="busi" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												BUSI
+											</ToggleButton>
+											<ToggleButton value="anth" onClick={e => toggleTags(e.target.value)}>
+												ANTH
+											</ToggleButton>
+											<ToggleButton value="biol" onClick={e => toggleTags(e.target.value)}>
+												BIOL
+											</ToggleButton>
+											<ToggleButton value="chem" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												CHEM
+											</ToggleButton>
+										</ToggleButtonGroup>
+
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="econ" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												ECON
+											</ToggleButton>
+											<ToggleButton value="othermajors" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Other Majors
+											</ToggleButton>
+										</ToggleButtonGroup>
+									</div>
+									<div className="has-text-black has-text-weight-medium mb-3">
+										<span className="mr-1">Sports</span>
+										<span className="icon">
+											<i className="fas fa-chevron-up"></i>
+										</span>
+									</div>
+									<div className="tags are-small">
+										<span className="tag is-rounded is-primary has-text-weight-semibold has-text-white">Soccer</span>
+										<span className="tag is-rounded is-primary has-text-weight-semibold has-text-white">Football</span>
+										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Baseball</span>
+										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Basketball</span>
+										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Hockey</span>
+										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Golf</span>
+										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Other Sports</span>
+										<span className="tag is-rounded has-text-weight-semibold has-text-dark">Sports Watching</span>
+									</div>
+									<div className="has-text-black has-text-weight-medium mb-3">
+										<span className="mr-1">Interests</span>
+										<span className="icon">
+											<i className="fas fa-chevron-up"></i>
+										</span>
+									</div>
+									<div className="tags are-small are-rounded">
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="art" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Art
+											</ToggleButton>
+											<ToggleButton value="video games" onClick={e => toggleTags(e.target.value)}>
+												Video Games
+											</ToggleButton>
+											<ToggleButton value="board games" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Board Games
+											</ToggleButton>
+										</ToggleButtonGroup>
+
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="hiking" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Hiking
+											</ToggleButton>
+											<ToggleButton value="movies" onClick={e => toggleTags(e.target.value)}>
+												Movies
+											</ToggleButton>
+											<ToggleButton value="politics" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Politics
+											</ToggleButton>
+										</ToggleButtonGroup>
+
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="debate" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Debate
+											</ToggleButton>
+											<ToggleButton value="publicspeaking" onClick={e => toggleTags(e.target.value)}>
+												Public Speaking
+											</ToggleButton>
+											<ToggleButton value="dancing" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Dancing
+											</ToggleButton>
+										</ToggleButtonGroup>
+
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="singing" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Singing
+											</ToggleButton>
+											<ToggleButton value="theatre" onClick={e => toggleTags(e.target.value)}>
+												Theatre
+											</ToggleButton>
+											<ToggleButton value="volunteering" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Volunteering
+											</ToggleButton>
+										</ToggleButtonGroup>
+
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="networking" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Networking
+											</ToggleButton>
+											<ToggleButton value="otherinterests" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Other Interests
+											</ToggleButton>
+										</ToggleButtonGroup>
+									</div>
+									<div className="has-text-black has-text-weight-medium mb-3">
+										<span className="mr-1">Music</span>
+										<span className="icon">
+											<i className="fas fa-chevron-up"></i>
+										</span>
+									</div>
+									<div className="tags are-small are-rounded">
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="classical" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Classical
+											</ToggleButton>
+											<ToggleButton value="hiphop" onClick={e => toggleTags(e.target.value)}>
+												Hip Hop
+											</ToggleButton>
+											<ToggleButton value="pop" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Pop
+											</ToggleButton>
+										</ToggleButtonGroup>
+
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="electronic" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Electronic
+											</ToggleButton>
+											<ToggleButton value="indie" onClick={e => toggleTags(e.target.value)}>
+												Indie
+											</ToggleButton>
+											<ToggleButton value="country" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Country
+											</ToggleButton>
+										</ToggleButtonGroup>
+
+										<ToggleButtonGroup
+											value={formats}
+											onChange={handleFormat}
+											aria-label="text formatting"
+											type="checkbox"
+											color="primary"
+											size="small"
+											fullWidth
+											sx={{
+												borderRadius: '9999px',
+											}}
+										>
+											<ToggleButton value="jazz" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Jazz
+											</ToggleButton>
+											<ToggleButton value="rock" onClick={e => toggleTags(e.target.value)}>
+												Rock
+											</ToggleButton>
+											<ToggleButton value="othergenres" sx={{ borderRadius: 9999 }} onClick={e => toggleTags(e.target.value)}>
+												Other Genres
+											</ToggleButton>
+										</ToggleButtonGroup>
+									</div>
                                 </div>
                             </div>
                         </form>
