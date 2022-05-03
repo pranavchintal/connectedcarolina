@@ -26,14 +26,25 @@ function GroupCard(props) {
     props.setColDays(props.days)
     props.setColCap(props.cap)
     props.setColSocial(props.social)
-    if (props.colVisible && expanded) {
-      setExpanded(false)
-      props.setColGroupID(null)
-      props.setColVisible(false)
-    } else {
-      props.setColGroupID(props.created)
-      setExpanded(true)
-      props.setColVisible(true)
+    if (props.setColMembers) {
+      props.setColMembers(props.members)
+    }
+    if (props.setColEvent && props.event) {
+      props.setColEvent(true)
+    } else if (props.setColEvent && !props.event) {
+      props.setColEvent(false)
+    }
+
+    if (props.setColGroupID) {
+      if (props.colVisible && expanded) {
+        setExpanded(false)
+        props.setColGroupID(null)
+        props.setColVisible(false)
+      } else {
+        props.setColGroupID(props.created)
+        setExpanded(true)
+        props.setColVisible(true)
+      }
     }
   }
 
@@ -42,6 +53,12 @@ function GroupCard(props) {
       setExpanded(false)
     }
   }, [props.colGroupID, props.created])
+
+  useEffect(() => {
+    if (props.index === 0 && props.amCreator) {
+      handleSelect()
+    }
+  }, [props.index, props.title, props.amCreator])
 
   return (
     <article className="media my-5 is-clickable" onClick={() => handleSelect()}>
